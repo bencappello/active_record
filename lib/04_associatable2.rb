@@ -1,6 +1,5 @@
 require_relative '03_associatable'
 
-# Phase IV
 module Associatable
 
   def has_one_through(name, through_name, source_name)
@@ -20,15 +19,10 @@ module Associatable
       key_val = self.send(through_fk)
       results = DBConnection.execute(<<-SQL, key_val)
         SELECT
-          #{source_table}.*
         FROM
-          #{through_table}
         JOIN
-          #{source_table}
         ON
-          #{through_table}.#{source_fk} = #{source_table}.#{source_pk}
         WHERE
-          #{through_table}.#{through_pk} = ?
       SQL
 
       source_options.model_class.parse_all(results).first
